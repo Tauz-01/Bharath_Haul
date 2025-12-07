@@ -28,6 +28,9 @@ const Products = () => {
                 scrollTrigger: {
                     trigger: section,
                     start: "top 80%",
+                    end: "top 20%",
+                    scrub: 1,
+                    pin: true, // Uncomment to pin the heading while scrolling
                 }
             }
         );
@@ -44,6 +47,8 @@ const Products = () => {
                     scrollTrigger: {
                         trigger: card,
                         start: "top 85%",
+                        end: "top 30%",
+                        scrub: 1,
                         toggleActions: "play none none reverse"
                     }
                 }

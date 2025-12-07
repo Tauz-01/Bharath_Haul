@@ -15,6 +15,8 @@ const About = () => {
                 trigger: containerRef.current,
                 start: "top 75%",
                 end: "bottom 75%",
+                scrub: 1,
+                pin: true, // Uncomment to pin the section while scrolling
                 toggleActions: "play none none reverse"
             }
         });
