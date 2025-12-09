@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+    const { signup } = useAuth();
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         name: '',
@@ -10,6 +14,7 @@ const Signup = () => {
         otp: '',
         role: ''
     });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,22 +22,39 @@ const Signup = () => {
 
     const handleSendOTP = (e) => {
         e.preventDefault();
-
+        // Mock OTP send
         console.log('Sending OTP to:', formData.phone);
         setStep(2);
     };
 
     const handleVerifyOTP = (e) => {
         e.preventDefault();
-
+        // Mock OTP verify
         console.log('Verifying OTP:', formData.otp);
         setStep(3);
     };
 
-    const handleRoleSelection = (e) => {
+    const handleRoleSelection = async (e) => {
         e.preventDefault();
-        console.log('Signup completed with role:', formData.role);
-        alert(`Signup successful as ${formData.role}!`);
+        setError('');
+
+        // Prepare data for backend (expects 'gmail' instead of 'email')
+        const userData = {
+            name: formData.name,
+            gmail: formData.email,
+            password: formData.password,
+            phone: formData.phone,
+            role: formData.role // 'customer' or 'driver'
+        };
+
+        const result = await signup(userData);
+
+        if (result.success) {
+            alert(`Signup successful as ${formData.role}!`);
+            navigate('/dashboard');
+        } else {
+            setError(result.message || 'Signup failed. Please try again.');
+        }
     };
 
     return (
@@ -53,6 +75,8 @@ const Signup = () => {
                 </div>
 
                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Create Account</h2>
+
+                {error && <div className="mb-4 text-red-500 text-sm text-center bg-red-100 p-2 rounded">{typeof error === 'object' ? JSON.stringify(error) : error}</div>}
 
                 {step === 1 && (
                     <form onSubmit={handleSendOTP}>

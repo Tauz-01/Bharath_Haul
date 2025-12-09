@@ -1,26 +1,38 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const { login } = useAuth();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // TODO: Implement login logic
-        console.log('Login attempt:', formData);
-        alert('Login functionality will be implemented with backend!');
+        setError('');
+
+        const result = await login(formData.email, formData.password);
+        if (result.success) {
+            navigate('/dashboard');
+        } else {
+            setError(result.message || 'Login failed');
+        }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4">
             <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login to Bharath Haul</h2>
+
+                {error && <div className="mb-4 text-red-500 text-sm text-center bg-red-100 p-2 rounded">{typeof error === 'object' ? JSON.stringify(error) : error}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
