@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bharath Haul Logistics</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-white shadow z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">Bharath Haul</h1>
+      <div class="space-x-6">
+        <a href="#hero" class="hover:text-blue-500">Home</a>
+        <a href="#howitworks" class="hover:text-blue-500">How It Works</a>
+        <a href="#video" class="hover:text-blue-500">Video</a>
+        <a href="#footer" class="hover:text-blue-500">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="flex flex-col items-center justify-center text-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600 text-white pt-24">
+    <h1 class="text-5xl font-bold mb-4">Seamless Logistics Solutions</h1>
+    <p class="text-lg mb-6">Transport made simple, secure, and scalable</p>
+    <a href="#howitworks" class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow hover:bg-gray-100">
+      Get Started
+    </a>
+  </section>
+
+  <!-- How It Works -->
+  <section id="howitworks" class="max-w-6xl mx-auto py-20 px-6">
+    <h2 class="text-3xl font-bold text-center mb-12">How It Works</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white shadow rounded p-6 text-center">Step 1: Sign Up</div>
+      <div class="bg-white shadow rounded p-6 text-center">Step 2: Book a Truck</div>
+      <div class="bg-white shadow rounded p-6 text-center">Step 3: Track Delivery</div>
+    </div>
+  </section>
+
+  <!-- Video Section -->
+  <section id="video" class="bg-gray-100 py-20 text-center">
+    <h2 class="text-3xl font-bold mb-8">Watch How It Works</h2>
+    <!-- Example YouTube Embed -->
+    <div class="flex justify-center">
+      <iframe width="800" height="450" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        title="Demo Video" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer" class="bg-blue-600 text-white py-6 text-center">
+    <p>&copy; 2025 Bharath Haul Logistics. All rights reserved.</p>
+  </footer>
+
+  <!-- GSAP Animations -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero animation
+    gsap.from("#hero h1, #hero p, #hero a", {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+
+    // Scroll animations for How It Works cards
+    gsap.from("#howitworks div", {
+      opacity: 0,
+      y: 100,
+      duration: 1,
+      stagger: 0.3,
+      scrollTrigger: {
+        trigger: "#howitworks",
+        start: "top 80%"
+      }
+    });
+
+    // Video section fade-in
+    gsap.from("#video iframe", {
+      opacity: 0,
+      scale: 0.8,
+      duration: 1,
+      scrollTrigger: {
+        trigger: "#video",
+        start: "top 80%"
+      }
+    });
+  </script>
+</body>
+</html>
