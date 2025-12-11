@@ -12,13 +12,25 @@ const Signup = () => {
         password: '',
         phone: '',
         otp: '',
-        role: ''
+        role: '',
+        // Driver-specific fields
+        licenseNumber: '',
+        aadharNumber: '',
+        vehicleType: '',
+        vehicleNumber: '',
+        licenseDocument: null,
+        vehicleRcDocument: null
     });
     const [error, setError] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+
+    const handleFileChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.files[0] });
+    };
+
 
     const handleSendOTP = (e) => {
         e.preventDefault();
@@ -34,8 +46,16 @@ const Signup = () => {
         setStep(3);
     };
 
-    const handleRoleSelection = async (e) => {
+    const handleRoleSelection = (e) => {
         e.preventDefault();
+        if (formData.role === 'driver') {
+            setStep(4); // Go to driver document upload
+        } else {
+            handleFinalSubmit(); // Submit directly for customers
+        }
+    };
+
+    const handleFinalSubmit = async () => {
         setError('');
 
         // Prepare data for backend (expects 'gmail' instead of 'email')
@@ -44,7 +64,14 @@ const Signup = () => {
             gmail: formData.email,
             password: formData.password,
             phone: formData.phone,
-            role: formData.role // 'customer' or 'driver'
+            role: formData.role, // 'customer' or 'driver'
+            // Driver-specific fields
+            ...(formData.role === 'driver' && {
+                licensenumber: formData.licenseNumber,
+                aadharNumber: formData.aadharNumber,
+                vehicleType: formData.vehicleType,
+                vehiclenumber: formData.vehicleNumber
+            })
         };
 
         const result = await signup(userData);
@@ -65,11 +92,12 @@ const Signup = () => {
                         <span className={`text-sm font-medium ${step >= 1 ? 'text-blue-600' : 'text-gray-400'}`}>Step 1</span>
                         <span className={`text-sm font-medium ${step >= 2 ? 'text-blue-600' : 'text-gray-400'}`}>Step 2</span>
                         <span className={`text-sm font-medium ${step >= 3 ? 'text-blue-600' : 'text-gray-400'}`}>Step 3</span>
+                        {formData.role === 'driver' && <span className={`text-sm font-medium ${step >= 4 ? 'text-blue-600' : 'text-gray-400'}`}>Step 4</span>}
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
                             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                            style={{ width: `${(step / 3) * 100}%` }}
+                            style={{ width: `${(step / (formData.role === 'driver' ? 4 : 3)) * 100}%` }}
                         ></div>
                     </div>
                 </div>
@@ -207,6 +235,127 @@ const Signup = () => {
                         <button
                             type="button"
                             onClick={() => setStep(2)}
+                            className="w-full mt-3 text-gray-600 hover:text-gray-800 text-sm"
+                        >
+                            ← Back
+                        </button>
+                    </form>
+                )}
+
+                {step === 4 && (
+                    <form onSubmit={(e) => { e.preventDefault(); handleFinalSubmit(); }}>
+                        <p className="text-gray-600 text-sm mb-6 text-center font-medium">
+                            Driver Documents & Vehicle Information
+                        </p>
+
+                        {/* License Information */}
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-medium mb-2">
+                                License Number <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="licenseNumber"
+                                value={formData.licenseNumber}
+                                onChange={handleChange}
+                                placeholder="Enter license number manually"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-medium mb-2">
+                                Upload License Document <span className="text-gray-500 text-xs">(Optional)</span>
+                            </label>
+                            <input
+                                type="file"
+                                name="licenseDocument"
+                                onChange={handleFileChange}
+                                accept="image/*,.pdf"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">Accepted: JPG, PNG, PDF (Max 5MB)</p>
+                        </div>
+
+                        {/* Aadhar Number */}
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-medium mb-2">
+                                Aadhar Number <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="aadharNumber"
+                                value={formData.aadharNumber}
+                                onChange={handleChange}
+                                placeholder="Enter 12-digit Aadhar number"
+                                maxLength="12"
+                                pattern="[0-9]{12}"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                        </div>
+
+                        {/* Vehicle Type */}
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-medium mb-2">
+                                Vehicle Type <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                                name="vehicleType"
+                                value={formData.vehicleType}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                required
+                            >
+                                <option value="">Select vehicle type</option>
+                                <option value="truck">Mini Truck (Haul)</option>
+                                <option value="suv">SUV</option>
+                                <option value="sedan">Sedan</option>
+                                <option value="bike">Bike</option>
+                            </select>
+                        </div>
+
+                        {/* Vehicle Number */}
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-medium mb-2">
+                                Vehicle Number <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="vehicleNumber"
+                                value={formData.vehicleNumber}
+                                onChange={handleChange}
+                                placeholder="e.g., MH12AB1234"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
+                                required
+                            />
+                        </div>
+
+                        {/* Vehicle RC Document */}
+                        <div className="mb-6">
+                            <label className="block text-gray-700 text-sm font-medium mb-2">
+                                Upload Vehicle RC Document <span className="text-gray-500 text-xs">(Optional)</span>
+                            </label>
+                            <input
+                                type="file"
+                                name="vehicleRcDocument"
+                                onChange={handleFileChange}
+                                accept="image/*,.pdf"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">Accepted: JPG, PNG, PDF (Max 5MB)</p>
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300"
+                        >
+                            Complete Driver Signup
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setStep(3)}
                             className="w-full mt-3 text-gray-600 hover:text-gray-800 text-sm"
                         >
                             ← Back

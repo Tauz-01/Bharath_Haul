@@ -3,23 +3,94 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { bookingService } from '../services/api';
 
+
 const BookingMapPage = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const [directions, setDirections] = useState(null);
     const [distance, setDistance] = useState('');
     const [duration, setDuration] = useState('');
     const [fare, setFare] = useState(0);
     const [vehicleType, setVehicleType] = useState('truck');
-    const [pickupLocation, setPickupLocation] = useState(null);
-    const [dropoffLocation, setDropoffLocation] = useState(null);
+    const [pickupLocation, setPickupLocation] = useState(null); // { lat, lng, address }
+    const [dropoffLocation, setDropoffLocation] = useState(null); // { lat, lng, address }
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
-    const [manualDistance, setManualDistance] = useState('');
+    const [manualDistance, setManualDistance] = useState(''); // Manual distance input
 
-    // Calculate fare based on manual distance
+    // Simple input handler for pickup/dropoff (no autocomplete needed for now)
+    const LocationInput = ({ value, onChange, role, label }) => {
+        return (
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                    {label} {role === 'pickup' && <span className="text-green-600">●</span>} {role === 'dropoff' && <span className="text-red-600">●</span>}
+                </label>
+                <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => onChange({ address: e.target.value })}
+                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder={`Enter ${label}`}
+                />
+            </div>
+        );
+    };
+
+
+    const calculateRoute = async () => {
+        if (!pickupLocation || !dropoffLocation) return;
+
+        const directionsService = new google.maps.DirectionsService();
+        const results = await directionsService.route({
+            origin: pickupLocation,
+            destination: dropoffLocation,
+            travelMode: google.maps.TravelMode.DRIVING,
+        });
+        setDirections(results);
+        setDistance(results.routes[0].legs[0].distance.text);
+        setDuration(results.routes[0].legs[0].duration.text);
+
+        // Simple mock fare calculation
+        const distValue = results.routes[0].legs[0].distance.value / 1000; // km
+        const baseFare = vehicleType === 'bike' ? 20 : vehicleType === 'truck' ? 100 : 50;
+        const perKm = vehicleType === 'bike' ? 10 : vehicleType === 'truck' ? 30 : 15;
+        const estimatedFare = Math.round(baseFare + (distValue * perKm));
+        setFare(estimatedFare);
+    };
+
+    // Effect to recalculate route when locations change
+    React.useEffect(() => {
+        if (pickupLocation && dropoffLocation && isLoaded) {
+            // Accessing google object needing window or script loaded
+            if (window.google) {
+                const directionsService = new window.google.maps.DirectionsService();
+                directionsService.route({
+                    origin: pickupLocation,
+                    destination: dropoffLocation,
+                    travelMode: window.google.maps.TravelMode.DRIVING,
+                }, (result, status) => {
+                    if (status === window.google.maps.DirectionsStatus.OK) {
+                        setDirections(result);
+                        setDistance(result.routes[0].legs[0].distance.text);
+                        setDuration(result.routes[0].legs[0].duration.text);
+
+                        const distValue = result.routes[0].legs[0].distance.value / 1000;
+                        const baseFare = vehicleType === 'bike' ? 20 : vehicleType === 'truck' ? 100 : 50;
+                        const perKm = vehicleType === 'bike' ? 10 : vehicleType === 'truck' ? 30 : 15;
+                        setFare(Math.round(baseFare + (distValue * perKm)));
+                    } else {
+                        console.error(`error fetching directions ${result}`);
+                    }
+                });
+            }
+        }
+    }, [pickupLocation, dropoffLocation, vehicleType, isLoaded]);
+
+    // Fallback: Set default fare if locations are selected but fare is not calculated (map error)
     React.useEffect(() => {
         if (pickupLocation && dropoffLocation) {
             if (manualDistance && parseFloat(manualDistance) > 0) {
+                // Calculate fare based on manual distance
                 const distKm = parseFloat(manualDistance);
                 const baseFare = vehicleType === 'bike' ? 20 : vehicleType === 'truck' ? 100 : 50;
                 const perKm = vehicleType === 'bike' ? 10 : vehicleType === 'truck' ? 30 : 15;
@@ -28,6 +99,7 @@ const BookingMapPage = () => {
                 setDistance(`${distKm} km`);
                 setDuration('Approx');
             } else if (fare === 0) {
+                // Set a default fare if no distance entered
                 const baseFare = vehicleType === 'bike' ? 50 : vehicleType === 'truck' ? 200 : 100;
                 setFare(baseFare);
                 setDistance('Enter distance');
@@ -36,9 +108,12 @@ const BookingMapPage = () => {
         }
     }, [pickupLocation, dropoffLocation, vehicleType, manualDistance]);
 
+
+
+
     const handleBooking = async () => {
         if (!pickupLocation || !dropoffLocation) {
-            alert('Please enter pickup and dropoff locations');
+            alert('Please select pickup and dropoff locations');
             return;
         }
         setLoading(true);
@@ -74,31 +149,18 @@ const BookingMapPage = () => {
                     </div>
                 )}
 
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                        Pickup Location <span className="text-green-600">●</span>
-                    </label>
-                    <input
-                        type="text"
-                        value={pickupLocation?.address || ''}
-                        onChange={(e) => setPickupLocation({ address: e.target.value })}
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Enter Pickup Location"
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                        Dropoff Location <span className="text-red-600">●</span>
-                    </label>
-                    <input
-                        type="text"
-                        value={dropoffLocation?.address || ''}
-                        onChange={(e) => setDropoffLocation({ address: e.target.value })}
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Enter Dropoff Location"
-                    />
-                </div>
+                <LocationInput
+                    role="pickup"
+                    label="Pickup Location"
+                    value={pickupLocation?.address || ''}
+                    onChange={setPickupLocation}
+                />
+                <LocationInput
+                    role="dropoff"
+                    label="Dropoff Location"
+                    value={dropoffLocation?.address || ''}
+                    onChange={setDropoffLocation}
+                />
 
                 <div className="mb-6">
                     <label className="block text-gray-700 text-sm font-bold mb-2">Vehicle Type</label>
