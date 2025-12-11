@@ -40,7 +40,7 @@ const Signup = () => {
 
         // Prepare data for backend (expects 'gmail' instead of 'email')
         const userData = {
-            name: formData.name,
+            username: formData.name,
             gmail: formData.email,
             password: formData.password,
             phone: formData.phone,

@@ -10,9 +10,12 @@ import Signup from './components/Signup';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
-import BookingPage from './pages/BookingPage';
+import BookingMapPage from './pages/BookingMapPage';
+import BookingPage from './pages/BookingPage'; // Keep for reference if needed
 import TripsPage from './pages/TripsPage';
 import WalletPage from './pages/WalletPage';
+import DriverDashboard from './pages/DriverDashboard';
+import ChatBot from './components/ChatBot';
 
 const HomePage = () => {
   return (
@@ -25,12 +28,17 @@ const HomePage = () => {
   );
 };
 
+
+import BackendTest from './components/BackendTest';
+
 function App() {
   return (
     <Router>
       <AuthProvider>
         <div className="font-sans antialiased text-gray-900 bg-white">
+          <BackendTest />
           <Navbar />
+          <ChatBot />
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<HomePage />} />
@@ -40,9 +48,10 @@ function App() {
             {/* Protected Routes */}
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/book-ride" element={<BookingPage />} />
+              <Route path="/book-ride" element={<BookingMapPage />} />
               <Route path="/trips" element={<TripsPage />} />
               <Route path="/wallet" element={<WalletPage />} />
+              <Route path="/driver-dashboard" element={<DriverDashboard />} />
             </Route>
 
           </Routes>

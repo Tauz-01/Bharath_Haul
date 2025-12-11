@@ -22,9 +22,9 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black p-2`}
+            className={`fixed border top-0 left-1/2 -translate-x-1/2 w-5/6 z-50 rounded-4xl transition-all duration-300 bg-gray-900/40 backdrop-blur-md border border-white/10 shadow-lg p-2 `}
         >
-            <div className="container mx-auto px-6 flex justify-between items-center">
+            <div className="items-center container mx-auto px-6 flex justify-between items-center">
                 <Link to="/" className={`text-2xl tracking-tighter `}>
                     <span className='text-red-500'> Bharath</span><span className='text-white'>Haul</span>
                 </Link>
