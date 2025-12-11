@@ -41,6 +41,13 @@ const BookingMapPage = () => {
             alert('Please enter pickup and dropoff locations');
             return;
         }
+
+        if (!user || !user.id) {
+            alert('Please login first to create a booking');
+            navigate('/login');
+            return;
+        }
+
         setLoading(true);
         try {
             const bookingPayload = {
@@ -51,12 +58,17 @@ const BookingMapPage = () => {
                 bookingTime: new Date().toISOString()
             };
 
+            console.log('User ID:', user.id);
+            console.log('Booking Payload:', bookingPayload);
+
             await bookingService.create(user.id, bookingPayload);
             setMessage('Booking created successfully! Redirecting...');
             setTimeout(() => navigate('/trips'), 1500);
         } catch (error) {
-            console.error(error);
-            setMessage('Failed to create booking.');
+            console.error('Booking error:', error);
+            console.error('Error response:', error.response?.data);
+            console.error('Error status:', error.response?.status);
+            setMessage(error.response?.data || 'Failed to create booking.');
         } finally {
             setLoading(false);
         }

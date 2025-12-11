@@ -85,18 +85,18 @@ const Signup = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4">
+        <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 ">
             <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
                 <div className="mb-8">
                     <div className="flex justify-between items-center mb-2">
                         <span className={`text-sm font-medium ${step >= 1 ? 'text-blue-600' : 'text-gray-400'}`}>Step 1</span>
                         <span className={`text-sm font-medium ${step >= 2 ? 'text-blue-600' : 'text-gray-400'}`}>Step 2</span>
                         <span className={`text-sm font-medium ${step >= 3 ? 'text-blue-600' : 'text-gray-400'}`}>Step 3</span>
-                        {formData.role === 'driver' && <span className={`text-sm font-medium ${step >= 4 ? 'text-blue-600' : 'text-gray-400'}`}>Step 4</span>}
+                        {formData.role === 'driver' && <span className={`text-sm font-medium ${step >= 4 ? 'text-green-600' : 'text-gray-400'}`}>Step 4</span>}
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
-                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                            className="bg-green-600 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${(step / (formData.role === 'driver' ? 4 : 3)) * 100}%` }}
                         ></div>
                     </div>

@@ -33,6 +33,7 @@ const DriverDashboard = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isOnline, setIsOnline] = useState(false);
 
     const fetchBookings = async () => {
         try {
@@ -177,18 +178,43 @@ const DriverDashboard = () => {
                                 Manage your bookings and view customer details
                             </Typography>
                         </Box>
-                        <Chip
-                            label={`${bookings.length} Booking${bookings.length !== 1 ? 's' : ''}`}
-                            sx={{
-                                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                                color: '#fff',
-                                fontWeight: 'bold',
-                                fontSize: '1rem',
-                                height: 36,
-                                px: 2,
-                                boxShadow: '0 4px 15px rgba(245, 87, 108, 0.4)'
-                            }}
-                        />
+                        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                            <Button
+                                variant="contained"
+                                onClick={() => setIsOnline(!isOnline)}
+                                sx={{
+                                    background: isOnline
+                                        ? 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)'
+                                        : 'linear-gradient(135deg, #757575 0%, #616161 100%)',
+                                    color: '#fff',
+                                    fontWeight: 700,
+                                    px: 3,
+                                    py: 1.5,
+                                    boxShadow: isOnline
+                                        ? '0 4px 15px rgba(76, 175, 80, 0.4)'
+                                        : '0 4px 15px rgba(117, 117, 117, 0.4)',
+                                    '&:hover': {
+                                        background: isOnline
+                                            ? 'linear-gradient(135deg, #45a049 0%, #3d8b40 100%)'
+                                            : 'linear-gradient(135deg, #616161 0%, #424242 100%)',
+                                    }
+                                }}
+                            >
+                                {isOnline ? '🟢 Online' : '⚫ Offline'}
+                            </Button>
+                            <Chip
+                                label={`${bookings.length} Booking${bookings.length !== 1 ? 's' : ''}`}
+                                sx={{
+                                    background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                                    color: '#fff',
+                                    fontWeight: 'bold',
+                                    fontSize: '1rem',
+                                    height: 36,
+                                    px: 2,
+                                    boxShadow: '0 4px 15px rgba(245, 87, 108, 0.4)'
+                                }}
+                            />
+                        </Box>
                     </Stack>
                 </Box>
 

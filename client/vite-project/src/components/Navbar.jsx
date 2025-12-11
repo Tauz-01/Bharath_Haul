@@ -29,13 +29,13 @@ const Navbar = () => {
                     <span className='text-red-500'> Bharath</span><span className='text-white'>Haul</span>
                 </Link>
 
-                <div className="hidden md:flex space-x-8 items-center">
+                <div className="hidden md:flex space-x-8 items-center text-white">
                     {!user && ['Home', 'Features', 'How it Works'].map((item) => (
                         <Link
                             key={item}
                             to={`#${item.toLowerCase().replace(/\s/g, '')}`}
-                            className={`hover:text-blue-500 transition-colors `}
-                        >
+                            className={`hover:text-blue-400 transition-colors `}
+                        >c;ldskjflksd
                             {item}
                         </Link>
                     ))}
