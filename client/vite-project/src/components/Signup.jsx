@@ -13,7 +13,7 @@ const Signup = () => {
         phone: '',
         otp: '',
         role: '',
-        // Driver-specific fields
+        
         licenseNumber: '',
         aadharNumber: '',
         vehicleType: '',
@@ -34,14 +34,14 @@ const Signup = () => {
 
     const handleSendOTP = (e) => {
         e.preventDefault();
-        // Mock OTP send
+        
         console.log('Sending OTP to:', formData.phone);
         setStep(2);
     };
 
     const handleVerifyOTP = (e) => {
         e.preventDefault();
-        // Mock OTP verify
+        
         console.log('Verifying OTP:', formData.otp);
         setStep(3);
     };
@@ -49,23 +49,23 @@ const Signup = () => {
     const handleRoleSelection = (e) => {
         e.preventDefault();
         if (formData.role === 'driver') {
-            setStep(4); // Go to driver document upload
+            setStep(4); 
         } else {
-            handleFinalSubmit(); // Submit directly for customers
+            handleFinalSubmit(); 
         }
     };
 
     const handleFinalSubmit = async () => {
         setError('');
 
-        // Prepare data for backend (expects 'gmail' instead of 'email')
+        
         const userData = {
             username: formData.name,
             gmail: formData.email,
             password: formData.password,
             phone: formData.phone,
-            role: formData.role, // 'customer' or 'driver'
-            // Driver-specific fields
+            role: formData.role, 
+            
             ...(formData.role === 'driver' && {
                 licensenumber: formData.licenseNumber,
                 aadharNumber: formData.aadharNumber,
@@ -248,7 +248,7 @@ const Signup = () => {
                             Driver Documents & Vehicle Information
                         </p>
 
-                        {/* License Information */}
+                        { }
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-medium mb-2">
                                 License Number <span className="text-red-500">*</span>
@@ -278,7 +278,7 @@ const Signup = () => {
                             <p className="text-xs text-gray-500 mt-1">Accepted: JPG, PNG, PDF (Max 5MB)</p>
                         </div>
 
-                        {/* Aadhar Number */}
+                        { }
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-medium mb-2">
                                 Aadhar Number <span className="text-red-500">*</span>
@@ -296,7 +296,7 @@ const Signup = () => {
                             />
                         </div>
 
-                        {/* Vehicle Type */}
+                        { }
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-medium mb-2">
                                 Vehicle Type <span className="text-red-500">*</span>
@@ -316,7 +316,7 @@ const Signup = () => {
                             </select>
                         </div>
 
-                        {/* Vehicle Number */}
+                        { }
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-medium mb-2">
                                 Vehicle Number <span className="text-red-500">*</span>
@@ -332,7 +332,7 @@ const Signup = () => {
                             />
                         </div>
 
-                        {/* Vehicle RC Document */}
+                        { }
                         <div className="mb-6">
                             <label className="block text-gray-700 text-sm font-medium mb-2">
                                 Upload Vehicle RC Document <span className="text-gray-500 text-xs">(Optional)</span>

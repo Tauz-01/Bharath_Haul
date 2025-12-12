@@ -58,7 +58,7 @@ const DriverDashboard = () => {
     const handleAccept = async (bookingId) => {
         try {
             await bookingService.accept(bookingId, user.id);
-            fetchBookings(); // Refresh the list
+            fetchBookings(); 
         } catch (err) {
             alert('Failed to accept booking. Please try again.');
         }
@@ -67,7 +67,7 @@ const DriverDashboard = () => {
     const handleReject = async (bookingId) => {
         try {
             await bookingService.reject(bookingId);
-            fetchBookings(); // Refresh the list
+            fetchBookings(); 
         } catch (err) {
             alert('Failed to reject booking. Please try again.');
         }
@@ -137,7 +137,7 @@ const DriverDashboard = () => {
             }}
         >
             <Container maxWidth="lg" sx={{ pt: 14, pb: 6, position: 'relative', zIndex: 1 }}>
-                {/* Header */}
+                { }
                 <Box sx={{ mb: 6 }}>
                     <Stack direction="row" spacing={3} alignItems="center" sx={{ mb: 2 }}>
                         <Avatar
@@ -218,7 +218,7 @@ const DriverDashboard = () => {
                     </Stack>
                 </Box>
 
-                {/* Error Message */}
+                { }
                 {error && (
                     <Paper
                         sx={{
@@ -233,7 +233,7 @@ const DriverDashboard = () => {
                     </Paper>
                 )}
 
-                {/* Bookings List */}
+                { }
                 {bookings.length === 0 ? (
                     <Paper
                         elevation={0}
@@ -258,7 +258,7 @@ const DriverDashboard = () => {
                         {bookings.map((booking) => {
                             const statusStyle = getStatusColor(booking.status);
                             return (
-                                <Grid item xs={12} key={booking.id}>
+                                <Grid size={{ xs: 12 }} key={booking.id}>
                                     <Card
                                         sx={{
                                             background: '#2a2a2a',
@@ -297,7 +297,7 @@ const DriverDashboard = () => {
 
                                             <Grid container spacing={3}>
                                                 {/* Customer Information */}
-                                                <Grid item xs={12} md={6}>
+                                                <Grid size={{ xs: 12, md: 6 }}>
                                                     <Paper
                                                         elevation={0}
                                                         sx={{
@@ -366,7 +366,7 @@ const DriverDashboard = () => {
                                                 </Grid>
 
                                                 {/* Booking Details */}
-                                                <Grid item xs={12} md={6}>
+                                                <Grid size={{ xs: 12, md: 6 }}>
                                                     <Paper
                                                         elevation={0}
                                                         sx={{

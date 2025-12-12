@@ -49,7 +49,7 @@ const WalletPage = () => {
     };
 
     return (
-        <div className="container mx-auto p-4 pt-24 bg-black">
+        <div className="mx-auto p-4 pt-24 bg-black h-screen">
             <div className="bg-white shadow rounded-lg overflow-hidden">
                 <div className="bg-gray-800 text-white p-6">
                     <h1 className="text-3xl font-bold">My Wallet</h1>
@@ -112,7 +112,7 @@ const WalletPage = () => {
                                                 <div className="text-xs text-gray-500">{tx.method}</div>
                                             </div>
                                             <div className="text-xs text-gray-400">
-                                                {/* No date in simple Transaction model? Assuming ID acts as timestamp or user accepts hidden dates */}
+                                                { }
                                                 ID: {tx.id}
                                             </div>
                                         </li>

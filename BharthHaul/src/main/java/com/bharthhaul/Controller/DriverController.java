@@ -18,7 +18,7 @@ public class DriverController {
         this.driverRepo = driverRepo;
     }
 
-    // 1. Get driver profile
+    
     @GetMapping("/{id}")
     public ResponseEntity<Driver> getDriver(@PathVariable Long id) {
         return driverRepo.findById(id)
@@ -26,7 +26,7 @@ public class DriverController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 2. Update driver profile
+    
     @PutMapping("/{id}")
     public ResponseEntity<String> updateDriver(@PathVariable Long id,
                                                @RequestBody Driver updated) {
@@ -44,7 +44,7 @@ public class DriverController {
         return ResponseEntity.ok("Driver updated successfully");
     }
 
-    // 3. Update online status
+    
     @PutMapping("/{id}/status")
     public ResponseEntity<String> updateStatus(@PathVariable Long id,
                                                @RequestParam Boolean online) {
@@ -58,7 +58,7 @@ public class DriverController {
         return ResponseEntity.ok("Driver status updated successfully");
     }
 
-    // 4. Update driver rating
+    
     @PutMapping("/{id}/rating")
     public ResponseEntity<String> updateRating(@PathVariable Long id,
                                                @RequestParam Double rating) {

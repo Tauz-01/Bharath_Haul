@@ -48,12 +48,12 @@ const Dashboard = () => {
                     ? bookingService.getDriverBookings(user.id)
                     : bookingService.getCustomerBookings(user.id)
             ]).then((results) => {
-                // Handle Wallet
+                
                 if (results[0].status === 'fulfilled') {
                     setBalance(results[0].value.data);
                 }
 
-                // Handle Bookings
+                
                 if (results[1].status === 'fulfilled') {
                     setRecentBookings(results[1].value.data.slice(0, 3));
                 }
@@ -115,7 +115,7 @@ const Dashboard = () => {
             }}
         >
             <Container maxWidth="lg" sx={{ pt: 14, pb: 6, position: 'relative', zIndex: 1 }}>
-                {/* Header Section */}
+                { }
                 <Box className="dashboard-header" sx={{ mb: 6 }}>
                     <Stack direction="row" spacing={3} alignItems="center" sx={{ mb: 2 }}>
                         <Avatar
@@ -179,7 +179,7 @@ const Dashboard = () => {
 
                 <Grid container spacing={4}>
                     {/* Wallet Card - Redesigned */}
-                    <Grid item xs={12} md={4}>
+                    <Grid size={{ xs: 12, md: 4 }}>
                         <Card
                             sx={{
                                 height: '100%',
@@ -267,7 +267,7 @@ const Dashboard = () => {
                     </Grid>
 
                     {/* Action Card - Redesigned */}
-                    <Grid item xs={12} md={4}>
+                    <Grid size={{ xs: 12, md: 4 }}>
                         <Card
                             className="dashboard-card"
                             sx={{
@@ -365,7 +365,7 @@ const Dashboard = () => {
                     </Grid>
 
                     {/* Recent Activity - Redesigned */}
-                    <Grid item xs={12} md={4}>
+                    <Grid size={{ xs: 12, md: 4 }}>
                         <Paper
                             elevation={0}
                             sx={{

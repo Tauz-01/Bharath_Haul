@@ -53,7 +53,7 @@ const ChatBot = () => {
         setMessages((prev) => [...prev, newMessage]);
         setInputText('');
 
-        // Simulate bot response
+        
         setTimeout(() => {
             const botResponse = {
                 id: Date.now() + 1,
@@ -72,7 +72,7 @@ const ChatBot = () => {
 
     return (
         <>
-            {/* Floating Action Button to toggle chat */}
+            { }
             <Fab
                 color="primary"
                 aria-label="chat"
@@ -93,7 +93,7 @@ const ChatBot = () => {
                 {isOpen ? <CloseIcon /> : <ChatIcon />}
             </Fab>
 
-            {/* Chat Window */}
+            { }
             <Fade in={isOpen}>
                 <Paper
                     elevation={12}
@@ -112,7 +112,7 @@ const ChatBot = () => {
                         backdropFilter: 'blur(10px)',
                     }}
                 >
-                    {/* Header */}
+                    { }
                     <Box
                         sx={{
                             p: 2,
@@ -147,7 +147,7 @@ const ChatBot = () => {
                         </IconButton>
                     </Box>
 
-                    {/* Messages Area */}
+                    { }
                     <Box
                         sx={{
                             flex: 1,
@@ -208,7 +208,7 @@ const ChatBot = () => {
                         <div ref={messagesEndRef} />
                     </Box>
 
-                    {/* Input Area */}
+                    { }
                     <Box
                         sx={{
                             p: 2,

@@ -9,28 +9,28 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Link to booking
+    
     @OneToOne
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
 
-    // Current status: started, in_progress, delivered, cancelled
+    
     @Column(nullable = false)
     private String status;
 
-    // GPS coordinates for live tracking
+    
     private double currentLat;
     private double currentLng;
 
-    // Estimated time of arrival
+    
     private LocalDateTime eta;
 
-    // Timeline timestamps
+    
     private LocalDateTime startedAt;
     private LocalDateTime completedAt;
 
     
-    // Getters and setters
+    
     public Long getId() {
         return id;
     }

@@ -31,14 +31,14 @@ public class Driver {
 
     private Boolean online = false;
 
-    private String aadharNumber; // ✅ Added
-    private Double rating = 0.0; // ✅ Added
+    private String aadharNumber; 
+    private Double rating = 0.0; 
 
-    // Document paths
+    
     private String licenseDocumentPath;
     private String vehicleRcDocumentPath;
 
-    // Getters and Setters
+    
     public Long getId() {
         return id;
     }

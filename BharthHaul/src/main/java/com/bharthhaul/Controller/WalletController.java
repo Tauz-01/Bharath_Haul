@@ -29,7 +29,7 @@ public class WalletController {
         this.userRepo = userRepo;
     }
 
-    // 1. Get wallet balance
+    
     @GetMapping("/{userId}")
     public ResponseEntity<Double> getBalance(@PathVariable Long userId) {
         Wallet wallet = walletRepo.findByUserId(userId);
@@ -39,7 +39,7 @@ public class WalletController {
         return ResponseEntity.ok(wallet.getBalance());
     }
 
-    // 2. Add money (Customer)
+    
     @PostMapping("/add/{userId}")
     public ResponseEntity<String> addMoney(@PathVariable Long userId,
                                            @RequestParam double amount,
@@ -65,7 +65,7 @@ public class WalletController {
         return ResponseEntity.ok("Money added successfully");
     }
 
-    // 3. Withdraw money (Driver)
+    
     @PostMapping("/withdraw/{userId}")
     public ResponseEntity<String> withdrawMoney(@PathVariable Long userId,
                                                 @RequestParam double amount,
@@ -87,7 +87,7 @@ public class WalletController {
         return ResponseEntity.ok("Withdrawal successful");
     }
 
-    // 4. Transaction history
+    
     @GetMapping("/transactions/{userId}")
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long userId) {
         Wallet wallet = walletRepo.findByUserId(userId);

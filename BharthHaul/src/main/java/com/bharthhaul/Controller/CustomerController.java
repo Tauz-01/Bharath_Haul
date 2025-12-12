@@ -18,7 +18,7 @@ public class CustomerController {
         this.customerRepo = customerRepo;
     }
 
-    // 1. Get customer profile
+    
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
         return customerRepo.findById(id)
@@ -26,7 +26,7 @@ public class CustomerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 2. Update customer profile
+    
     @PutMapping("/{id}")
     public ResponseEntity<String> updateCustomer(@PathVariable Long id,
                                                  @RequestBody Customer updated) {
@@ -42,7 +42,7 @@ public class CustomerController {
         return ResponseEntity.ok("Customer updated successfully");
     }
 
-    // 3. Add saved address
+    
     @PutMapping("/{id}/address")
     public ResponseEntity<String> addAddress(@PathVariable Long id,
                                              @RequestParam String address) {

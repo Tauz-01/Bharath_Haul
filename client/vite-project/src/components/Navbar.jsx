@@ -22,7 +22,7 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed border top-0 left-1/2 -translate-x-1/2 w-5/6 z-50 rounded-4xl transition-all duration-300 bg-gray-900/40 backdrop-blur-md border border-white/10 shadow-lg p-2 `}
+            className={`m-3 fixed border top-0 left-1/2 -translate-x-1/2 w-5/6 z-50 rounded-4xl transition-all duration-300 bg-gray-900/40 backdrop-blur-md border border-white/10 shadow-lg p-3 `}
         >
             <div className="items-center container mx-auto px-6 flex justify-between items-center">
                 <Link to="/" className={`text-2xl tracking-tighter `}>
@@ -33,9 +33,9 @@ const Navbar = () => {
                     {!user && ['Home', 'Features', 'How it Works'].map((item) => (
                         <Link
                             key={item}
-                            to={`#${item.toLowerCase().replace(/\s/g, '')}`}
+                            to={`${item.toLowerCase().replace(/\s/g, '')}`}
                             className={`hover:text-blue-400 transition-colors `}
-                        >c;ldskjflksd
+                        >
                             {item}
                         </Link>
                     ))}
@@ -60,11 +60,11 @@ const Navbar = () => {
                         </>
                     ) : (
                         <>
-                            <Link to="/signup" className={`text-white hover:text-blue-500 transition`}>
+                            <Link to="/signup" className={`text-white  transition bg-red-600 px-5 py-2 rounded transition hover:bg-red-800`}>
                                 Signup
                             </Link>
 
-                            <Link to="/login" className={`text-white hover:text-blue-500 transition`}>
+                            <Link to="/login" className={`text-white hover:text-red-500 transition border border-red-600 px-5 py-2`}>
                                 Login
                             </Link>
                         </>

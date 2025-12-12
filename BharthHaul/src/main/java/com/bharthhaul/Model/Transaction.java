@@ -18,14 +18,14 @@ public class Transaction {
     private double amount;
 
     @Column(nullable = false)
-    private String type; // "credit" or "debit"
+    private String type; 
 
     @Column(nullable = false)
-    private String method; // "upi", "card", "cash", etc.
+    private String method; 
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getters and setters
+    
     public Long getId() {
         return id;
     }

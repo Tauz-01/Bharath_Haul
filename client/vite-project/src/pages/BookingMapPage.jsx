@@ -16,7 +16,7 @@ const BookingMapPage = () => {
     const [message, setMessage] = useState('');
     const [manualDistance, setManualDistance] = useState('');
 
-    // Calculate fare based on manual distance
+
     React.useEffect(() => {
         if (pickupLocation && dropoffLocation) {
             if (manualDistance && parseFloat(manualDistance) > 0) {
@@ -66,9 +66,14 @@ const BookingMapPage = () => {
             setTimeout(() => navigate('/trips'), 1500);
         } catch (error) {
             console.error('Booking error:', error);
-            console.error('Error response:', error.response?.data);
-            console.error('Error status:', error.response?.status);
-            setMessage(error.response?.data || 'Failed to create booking.');
+            const errorMessage = error.response?.data || error.message || 'Failed to create booking.';
+
+            if (errorMessage.includes('User not found')) {
+                setMessage('Session invalid. Please login again.');
+                navigate('/login');
+            } else {
+                setMessage(errorMessage);
+            }
         } finally {
             setLoading(false);
         }
@@ -76,7 +81,7 @@ const BookingMapPage = () => {
 
     return (
         <div className="flex h-screen pt-16">
-            {/* Left Panel - Input Forms */}
+         
             <div className="w-full md:w-1/3 bg-white shadow-xl z-10 flex flex-col p-6 overflow-y-auto">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Plan Your Haul</h2>
 
@@ -166,7 +171,7 @@ const BookingMapPage = () => {
                 </button>
             </div>
 
-            {/* Right Panel - Map */}
+           
             <div className="hidden md:block w-2/3 relative bg-gray-100">
                 <iframe
                     width="100%"

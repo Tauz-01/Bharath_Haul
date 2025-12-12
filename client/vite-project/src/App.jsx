@@ -11,7 +11,6 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import BookingMapPage from './pages/BookingMapPage';
-import BookingPage from './pages/BookingPage'; // Keep for reference if needed
 import TripsPage from './pages/TripsPage';
 import WalletPage from './pages/WalletPage';
 import DriverDashboard from './pages/DriverDashboard';
@@ -29,23 +28,23 @@ const HomePage = () => {
 };
 
 
-import BackendTest from './components/BackendTest';
 
 function App() {
   return (
     <Router>
       <AuthProvider>
         <div className="font-sans antialiased text-gray-900 bg-white">
-          <BackendTest />
           <Navbar />
           <ChatBot />
           <Routes>
-            {/* Public Routes */}
+            { }
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-
-            {/* Protected Routes */}
+            <Route path="/howitworks" element={<HowItWorks />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/hero" element={<Hero />} />
+            { }
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/book-ride" element={<BookingMapPage />} />

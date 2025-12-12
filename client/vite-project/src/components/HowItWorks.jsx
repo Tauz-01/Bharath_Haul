@@ -13,7 +13,7 @@ const HowItWorks = () => {
     useEffect(() => {
         const ctx = gsap.context(() => {
 
-            // Animate the connecting line
+            
             if (lineRef.current) {
                 gsap.fromTo(lineRef.current,
                     { height: 0 },
@@ -24,7 +24,7 @@ const HowItWorks = () => {
                             trigger: sectionRef.current,
                             start: 'top center',
                             end: 'bottom center',
-                            scrub: 1 // Smooth scrub
+                            scrub: 1 
                         }
                     }
                 );
@@ -33,7 +33,7 @@ const HowItWorks = () => {
             stepsRef.current.forEach((step, index) => {
                 const q = gsap.utils.selector(step);
 
-                // Animate each step entering
+                
                 gsap.from(step, {
                     scrollTrigger: {
                         trigger: step,
@@ -45,7 +45,7 @@ const HowItWorks = () => {
                     duration: 1
                 });
 
-                // Pulse icon
+                
                 gsap.to(q('.step-icon'), {
                     scrollTrigger: {
                         trigger: step,
@@ -79,49 +79,49 @@ const HowItWorks = () => {
                 </div>
 
                 <div className="relative max-w-4xl mx-auto">
-                    {/* Central Line for Desktop */}
+                    { }
                     <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-gray-200 transform md:-translate-x-1/2 hidden md:block">
                         <div ref={lineRef} className="w-full bg-blue-500 origin-top"></div>
                     </div>
 
                     <div className="space-y-12 md:space-y-24">
-                        {/* Step 1 */}
+                        { }
                         <div ref={addToRefs} className="relative flex flex-col md:flex-row items-center md:justify-between group">
-                            {/* Left Content (Text for Step 1) */}
+                            { }
                             <div className="w-full md:w-5/12 text-left md:text-right pr-0 md:pr-12 mb-6 md:mb-0 order-2 md:order-1">
                                 <h3 className="text-2xl font-bold mb-2 text-gray-800">1. Select & Request</h3>
                                 <p className="text-gray-600">Enter pickup and drop locations and choose the right vehicle for your cargo.</p>
                             </div>
-                            {/* Icon */}
+                            { }
                             <div className="step-icon relative z-10 w-16 h-16 rounded-full bg-white border-4 border-blue-500 text-blue-500 flex items-center justify-center text-2xl shadow-lg order-1 md:order-2 mb-6 md:mb-0">
                                 <FaMapMarkedAlt />
                             </div>
-                            {/* Right/Empty for Step 1 */}
+                            { }
                             <div className="w-full md:w-5/12 pl-0 md:pl-12 order-3"></div>
                         </div>
 
-                        {/* Step 2 */}
+                        { }
                         <div ref={addToRefs} className="relative flex flex-col md:flex-row items-center md:justify-between group">
                             <div className="w-full md:w-5/12 pr-0 md:pr-12 mb-6 md:mb-0 order-2 md:order-1 hidden md:block"></div>
-                            {/* Icon */}
+                            { }
                             <div className="step-icon relative z-10 w-16 h-16 rounded-full bg-white border-4 border-blue-500 text-blue-500 flex items-center justify-center text-2xl shadow-lg order-1 md:order-2 mb-6 md:mb-0">
                                 <FaTruck />
                             </div>
-                            {/* Right Content (Text for Step 2) */}
+                            { }
                             <div className="w-full md:w-5/12 text-left pl-0 md:pl-12 order-2 md:order-3">
                                 <h3 className="text-2xl font-bold mb-2 text-gray-800">2. Connect With Driver</h3>
                                 <p className="text-gray-600">Nearest verified driver accepts your request and shares live tracking instantly.</p>
                             </div>
                         </div>
 
-                        {/* Step 3 */}
+                        { }
                         <div ref={addToRefs} className="relative flex flex-col md:flex-row items-center md:justify-between group">
-                            {/* Left Content */}
+                            { }
                             <div className="w-full md:w-5/12 text-left md:text-right pr-0 md:pr-12 mb-6 md:mb-0 order-2 md:order-1">
                                 <h3 className="text-2xl font-bold mb-2 text-gray-800">3. Track & Pay</h3>
                                 <p className="text-gray-600">Track the trip in real-time and pay securely after completion.</p>
                             </div>
-                            {/* Icon */}
+                            { }
                             <div className="step-icon relative z-10 w-16 h-16 rounded-full bg-white border-4 border-blue-500 text-blue-500 flex items-center justify-center text-2xl shadow-lg order-1 md:order-2 mb-6 md:mb-0">
                                 <FaWallet />
                             </div>

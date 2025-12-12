@@ -9,12 +9,12 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Link to customer
+    
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    // Link to driver (nullable until driver accepts)
+    
     @ManyToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
@@ -35,11 +35,11 @@ public class Booking {
     private double price;
 
     @Column(nullable = false)
-    private String status; // e.g. "pending", "accepted", "in_progress", "completed", "cancelled"
+    private String status; 
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-     // Getters and setters
+     
     public Long getId() {
         return id;
     }

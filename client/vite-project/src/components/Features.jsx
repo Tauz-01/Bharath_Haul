@@ -101,7 +101,7 @@ const Features = () => {
                     <p className="text-white max-w-2xl mx-auto">We connect you with the best logistics solutions efficiently and securely.</p>
                 </div>
 
-                {/* Circular Wheel Layout */}
+                { }
                 <div ref={wheelRef} className="relative max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((feature, index) => (

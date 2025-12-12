@@ -23,6 +23,10 @@ export const bookingService = {
     reject: (id) => api.put(`/booking/${id}/reject`),
 };
 
+export const invoiceService = {
+    getByBooking: (bookingId) => api.get(`/invoice/booking/${bookingId}`),
+};
+
 export const tripService = {
     start: (bookingId) => api.post(`/trip/start/${bookingId}`),
     updateLocation: (tripId, lat, lng) => api.put(`/trip/${tripId}/update-location`, null, { params: { lat, lng } }),
@@ -37,7 +41,7 @@ export const customerService = {
 };
 
 export const walletService = {
-    getBalance: (userId) => api.get(`/wallet/${userId}`), // Returns plain double
+    getBalance: (userId) => api.get(`/wallet/${userId}`), 
     addMoney: (userId, amount, method) => api.post(`/wallet/add/${userId}`, null, { params: { amount, method } }),
     withdraw: (userId, amount, method) => api.post(`/wallet/withdraw/${userId}`, null, { params: { amount, method } }),
     getTransactions: (userId) => api.get(`/wallet/transactions/${userId}`),

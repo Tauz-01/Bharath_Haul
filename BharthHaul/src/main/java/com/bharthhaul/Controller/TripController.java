@@ -22,7 +22,7 @@ public class TripController {
         this.bookingRepo = bookingRepo;
     }
 
-    // 1. Start trip
+    
     @PostMapping("/start/{bookingId}")
     public ResponseEntity<String> startTrip(@PathVariable Long bookingId) {
         Optional<Booking> bookingOpt = bookingRepo.findById(bookingId);
@@ -39,7 +39,7 @@ public class TripController {
         return ResponseEntity.ok("Trip started");
     }
 
-    // 2. Update driver location
+    
     @PutMapping("/{tripId}/update-location")
     public ResponseEntity<String> updateLocation(@PathVariable Long tripId,
                                                  @RequestParam double lat,
@@ -57,7 +57,7 @@ public class TripController {
         return ResponseEntity.ok("Location updated");
     }
 
-    // 3. Get trip details (for live tracking)
+    
     @GetMapping("/{tripId}")
     public ResponseEntity<Trip> getTrip(@PathVariable Long tripId) {
         return tripRepo.findById(tripId)
@@ -65,7 +65,7 @@ public class TripController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 4. Complete trip
+    
     @PostMapping("/{tripId}/complete")
     public ResponseEntity<String> completeTrip(@PathVariable Long tripId) {
         Optional<Trip> tripOpt = tripRepo.findById(tripId);

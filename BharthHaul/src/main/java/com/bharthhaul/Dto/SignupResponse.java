@@ -15,7 +15,7 @@ public class SignupResponse {
         this.message = message;
     }
 
-    // Getters
+    
     public Long getUserId() {
         return userId;
     }

@@ -10,7 +10,7 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Link to user (customer or driver)
+    
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -18,7 +18,7 @@ public class Wallet {
     @Column(nullable = false)
     private double balance = 0.0;
 
-    // One wallet can have many transactions
+    
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 
@@ -54,6 +54,6 @@ public class Wallet {
         this.transactions = transactions;
     }
 
-    // Getters and setters
+    
     
 }

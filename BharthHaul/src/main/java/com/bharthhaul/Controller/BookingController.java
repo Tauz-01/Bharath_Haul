@@ -8,6 +8,8 @@ import com.bharthhaul.Repository.CustomerRepository;
 import com.bharthhaul.Repository.DriverRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.bharthhaul.Model.User;
+import com.bharthhaul.Repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,38 +22,61 @@ public class BookingController {
     private final BookingRepository bookingRepo;
     private final CustomerRepository customerRepo;
     private final DriverRepository driverRepo;
+    private final UserRepository userRepo;
 
     public BookingController(BookingRepository bookingRepo,
             CustomerRepository customerRepo,
-            DriverRepository driverRepo) {
+            DriverRepository driverRepo,
+            UserRepository userRepo) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.driverRepo = driverRepo;
+        this.userRepo = userRepo;
     }
 
-    // 1. Customer creates a booking
-    @PostMapping("/create/{customerId}")
-    public ResponseEntity<String> createBooking(@PathVariable Long customerId,
+    
+    @PostMapping("/create/{userId}")
+    public ResponseEntity<String> createBooking(@PathVariable Long userId,
             @RequestBody com.bharthhaul.Dto.BookingRequest bookingRequest) {
-        Optional<Customer> customerOpt = customerRepo.findById(customerId);
+
+        
+        Optional<Customer> customerOpt = customerRepo.findByUser_Id(userId);
+        Customer customer;
+
         if (customerOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Customer not found");
+            
+            Optional<User> userOpt = userRepo.findById(userId);
+            if (userOpt.isEmpty()) {
+                return ResponseEntity.badRequest().body("User not found");
+            }
+
+            
+            User user = userOpt.get();
+            customer = new Customer();
+            customer.setUser(user);
+            customer.setName(user.getUsername());
+            customer.setPhone(user.getPhone() != null ? user.getPhone() : "N/A");
+            customer.setAddress("Details Pending"); 
+
+            customer = customerRepo.save(customer); 
+        } else {
+            customer = customerOpt.get();
         }
 
         Booking booking = new Booking();
-        booking.setCustomer(customerOpt.get());
+        booking.setCustomer(customer);
         booking.setPickupLocation(bookingRequest.getPickupLocation());
-        booking.setDropLocation(bookingRequest.getDropoffLocation()); // Map dropoffLocation -> dropLocation
-        booking.setLoadType(bookingRequest.getVehicleType()); // Map vehicleType -> loadType
-        booking.setPrice(bookingRequest.getFare()); // Map fare -> price
-        booking.setLoadWeight(10.0); // Default load weight
+        booking.setDropLocation(bookingRequest.getDropoffLocation()); 
+        booking.setLoadType(bookingRequest.getVehicleType()); 
+        booking.setPrice(bookingRequest.getFare()); 
+        booking.setLoadWeight(10.0); 
         booking.setStatus("pending");
 
         bookingRepo.save(booking);
         return ResponseEntity.ok("Booking created successfully");
     }
 
-    // 2. Get booking details
+    
     @GetMapping("/{id}")
     public ResponseEntity<Booking> getBooking(@PathVariable Long id) {
         return bookingRepo.findById(id)
@@ -59,46 +84,85 @@ public class BookingController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 3. List customer bookings
-    @GetMapping("/customer/{customerId}")
-    public List<Booking> getCustomerBookings(@PathVariable Long customerId) {
-        return bookingRepo.findByCustomer_Id(customerId);
+    
+    @GetMapping("/customer/{userId}")
+    public List<Booking> getCustomerBookings(@PathVariable Long userId) {
+        
+        Optional<Customer> customerOpt = customerRepo.findByUser_Id(userId);
+        if (customerOpt.isEmpty()) {
+            return List.of(); 
+        }
+        return bookingRepo.findByCustomer_Id(customerOpt.get().getId());
     }
 
-    // 4. List driver jobs - shows pending bookings (available loads) + driver's
-    // accepted bookings
-    @GetMapping("/driver/{driverId}")
-    public List<Booking> getDriverBookings(@PathVariable Long driverId) {
-        // Get all pending bookings (available for any driver) + bookings assigned to
-        // this driver
-        List<Booking> pendingBookings = bookingRepo.findByStatus("pending");
-        List<Booking> driverBookings = bookingRepo.findByDriver_Id(driverId);
+    
+    @GetMapping("/driver/{userId}")
+    public List<Booking> getDriverBookings(@PathVariable Long userId) {
+        
+        Optional<Driver> driverOpt = driverRepo.findByUser_Id(userId);
+        Long driverId = -1L;
+        if (driverOpt.isPresent()) {
+            driverId = driverOpt.get().getId();
+        }
 
-        // Combine both lists
-        pendingBookings.addAll(driverBookings);
+        
+        List<Booking> pendingBookings = bookingRepo.findByStatus("pending");
+
+        
+        if (driverId != -1L) {
+            List<Booking> driverBookings = bookingRepo.findByDriver_Id(driverId);
+            pendingBookings.addAll(driverBookings);
+        }
+
         return pendingBookings;
     }
 
-    // 5. Driver accepts booking
-    @PutMapping("/{id}/accept/{driverId}")
+    
+    @PutMapping("/{id}/accept/{userId}")
     public ResponseEntity<String> acceptBooking(@PathVariable Long id,
-            @PathVariable Long driverId) {
+            @PathVariable Long userId) {
         Optional<Booking> bookingOpt = bookingRepo.findById(id);
-        Optional<Driver> driverOpt = driverRepo.findById(driverId);
 
-        if (bookingOpt.isEmpty() || driverOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Booking or Driver not found");
+        
+        Optional<Driver> driverOpt = driverRepo.findByUser_Id(userId);
+        Driver driver;
+
+        if (driverOpt.isEmpty()) {
+            
+            Optional<User> userOpt = userRepo.findById(userId);
+            if (userOpt.isEmpty()) {
+                return ResponseEntity.badRequest().body("User not found");
+            }
+
+            
+            User user = userOpt.get();
+            driver = new Driver();
+            driver.setUser(user);
+            driver.setName(user.getUsername());
+            driver.setPhone(user.getPhone() != null ? user.getPhone() : "N/A");
+            driver.setLicensenumber("Pending");
+            driver.setVehicleType("Truck"); 
+            driver.setVehiclenumber("Pending");
+            driver.setOnline(true);
+
+            driver = driverRepo.save(driver);
+        } else {
+            driver = driverOpt.get();
+        }
+
+        if (bookingOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("Booking not found");
         }
 
         Booking booking = bookingOpt.get();
-        booking.setDriver(driverOpt.get());
+        booking.setDriver(driver);
         booking.setStatus("accepted");
         bookingRepo.save(booking);
 
         return ResponseEntity.ok("Booking accepted by driver");
     }
 
-    // 6. Driver rejects booking
+    
     @PutMapping("/{id}/reject")
     public ResponseEntity<String> rejectBooking(@PathVariable Long id) {
         Optional<Booking> bookingOpt = bookingRepo.findById(id);

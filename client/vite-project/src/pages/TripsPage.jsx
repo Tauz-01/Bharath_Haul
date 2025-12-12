@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { bookingService, tripService } from '../services/api';
+import { bookingService, tripService, invoiceService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const TripsPage = () => {
@@ -47,12 +47,22 @@ const TripsPage = () => {
     };
 
     const handleCompleteTrip = async (tripId) => {
-
         try {
             await tripService.complete(tripId);
             fetchTrips();
         } catch (error) {
             alert('Failed to complete trip');
+        }
+    };
+
+    const handleInvoice = async (bookingId) => {
+        try {
+            const res = await invoiceService.getByBooking(bookingId);
+            const inv = res.data;
+            alert(`INVOICE DETAILS:\n\nInvoice ID: ${inv.id}\nAmount: ₹${inv.amount}\nDate: ${inv.issuedDate}\nStatus: ${inv.status}\n\n(This is a simple view. Download PDF feature coming soon!)`);
+        } catch (error) {
+            console.error(error);
+            alert('Failed to generate/fetch invoice. Trip might not be eligible.');
         }
     };
 
@@ -100,19 +110,24 @@ const TripsPage = () => {
                                             Start Trip
                                         </button>
                                     )}
-                                    {/* Note: To complete a trip, we technically need the Trip ID, not Booking ID. 
-                                    Depending on backend response for 'getDriverBookings', it might not have detailed Trip info.
-                                    This is a simplified assumption that we can't easily complete without Trip ID.
-                                    We'd need to fetch trip details for an accepted booking.
-                                */}
+                                    { }
                                 </div>
                             )}
 
-                            {/* Actions for Customer */}
+                            { }
                             {(user.role === 'customer' || user.role === 'Customer' || user.role === 'USER') && (
                                 <div>
-                                    {/* Customer mostly just views status */}
+                                    { }
                                     {trip.status === 'pending' && <span className="text-xs bg-yellow-900 text-yellow-200 px-2 py-1 rounded">Waiting for driver</span>}
+
+                                    {(trip.status === 'accepted' || trip.status === 'completed') && (
+                                        <button
+                                            onClick={() => handleInvoice(trip.id)}
+                                            className="ml-4 bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700"
+                                        >
+                                            Invoice
+                                        </button>
+                                    )}
                                 </div>
                             )}
                         </div>

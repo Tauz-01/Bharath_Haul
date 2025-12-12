@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)   // ✅ Primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)   
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)       // ✅ Relationship to User
+    @JoinColumn(name = "user_id", nullable = false)       
     private User user;
 
     @Column(nullable = false)
@@ -23,7 +23,7 @@ public class Customer {
     private String companyName;
     private String address;
 
-    // Getters and Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

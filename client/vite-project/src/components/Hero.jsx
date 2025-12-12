@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import video from '../assets/WhatsApp Video 2025-12-08 at 1.16.11 PM.mp4';
+import { Link } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,21 +61,18 @@ const Hero = () => {
             <div className="absolute inset-0 bg-black/50 z-10"></div>
 
             <div className="relative z-20 flex items-center h-full text-white">
-                <div className="container mx-auto px-6 md:px-12" ref={textRef}>
-                    <h1 className="text-6xl font-extrabold tracking-tight mb-6 leading-tight text-left">
-                        Smart Logistics for <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-red-300">
-                            A Better Future
-                        </span>
-                    </h1>
-                    <p className="mb-10 max-w-2xl text-gray-200 text-left text-xl">
+                <div className="mx-auto px-6 md:px-12" ref={textRef}>
+                    <h1 className="text-6xl font-extrabold mb-6 ">
+                        Smart Logistics for a <span className="text-red-600">Better Future</span>
+                    </h1><br />
+                    <p className="mb-10 ml-20 text-gray-200 text-xl">
                         Connect with trusted transport owners. AI-powered matching for load type, weight, and value.
-                    </p>
+                    </p><br />
 
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <button className="border border-blue-500 hover:bg-blue-500 hover:text-white px-6 py-2 rounded transition duration-300">
+                    <div className="flex flex-col sm:flex-row gap-4 ml-120">
+                        <Link to="/signup" className=" cursor-pointer border border-red-500 hover:bg-red-600 hover:text-white px-6 py-2 rounded transition duration-300">
                             Explore Now
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

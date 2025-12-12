@@ -29,7 +29,7 @@ public class AdminController {
         long totalBookings = bookingRepo.count();
         long totalDrivers = driverRepo.count();
         long activeDrivers = driverRepo.findAll().stream()
-                .filter(d -> d.getLicensenumber() != null) // simple check for "verified"
+                .filter(d -> d.getLicensenumber() != null) 
                 .count();
 
         return ResponseEntity.ok("Bookings: " + totalBookings +
@@ -37,13 +37,13 @@ public class AdminController {
                 ", Active Drivers: " + activeDrivers);
     }
 
-    // 2. List all drivers
+    
     @GetMapping("/drivers")
     public List<Driver> getAllDrivers() {
         return driverRepo.findAll();
     }
 
-    // 3. Approve driver documents
+    
     @PutMapping("/driver/{id}/approve")
     public ResponseEntity<String> approveDriver(@PathVariable Long id) {
         Optional<Driver> driverOpt = driverRepo.findById(id);
@@ -51,12 +51,12 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Driver not found");
         }
         Driver driver = driverOpt.get();
-        // Here you could set a "verified" flag in Driver model
+        
         driverRepo.save(driver);
         return ResponseEntity.ok("Driver approved");
     }
 
-    // 4. Ban/unban driver
+    
     @PutMapping("/driver/{id}/ban")
     public ResponseEntity<String> banDriver(@PathVariable Long id) {
         Optional<Driver> driverOpt = driverRepo.findById(id);
@@ -64,7 +64,7 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Driver not found");
         }
         Driver driver = driverOpt.get();
-        // Example: set vehicleNumber = "BANNED" or add a banned flag
+        
         driver.setVehiclenumber("BANNED");
         driverRepo.save(driver);
         return ResponseEntity.ok("Driver banned");

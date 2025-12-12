@@ -34,16 +34,16 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Email Already Exists");
         }
 
-        // 1. Create User
+        
         User user = new User();
-        user.setUsername(signupRequest.getUsername()); // Map name to username
+        user.setUsername(signupRequest.getUsername()); 
         user.setGmail(signupRequest.getGmail());
         user.setPassword(signupRequest.getPassword());
         user.setRole(signupRequest.getRole());
 
         User savedUser = userRepo.save(user);
 
-        // 2. Create Profile based on Role
+        
         if ("customer".equalsIgnoreCase(signupRequest.getRole())) {
             com.bharthhaul.Model.Customer customer = new com.bharthhaul.Model.Customer();
             customer.setUser(savedUser);
@@ -56,14 +56,14 @@ public class AuthController {
             driver.setName(signupRequest.getUsername());
 
             driver.setPhone(signupRequest.getPhone());
-            // Set default/dummy values for required fields if needed, or allow nulls in DB
+            
             driver.setLicensenumber("PENDING");
             driver.setVehicleType("UNKNOWN");
             driver.setVehiclenumber("UNKNOWN");
             driverRepo.save(driver);
         }
 
-        // 3. Return Success Response
+        
         return ResponseEntity.ok(new com.bharthhaul.Dto.SignupResponse(
                 savedUser.getId(),
                 savedUser.getUsername(),
